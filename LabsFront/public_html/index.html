@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Almatron Labs</title>
+        <meta charset="UTF-8">
+        <link href='https://fonts.googleapis.com/css?family=Playfair+Display|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <style>
+            .introduction {
+                margin:25px;
+                padding:10px;
+                margin-bottom: 0;
+                border:1px solid #0099e6;
+                border-radius: 10px 10px 0 0; 
+                font-family: 'Oswald', sans-serif;
+                background-color:#e6f9ff;
+            }
+
+            .applications {
+                margin:10px 25px 0 25px;
+                padding:10px;
+                border: 1px solid #0099e6;
+                font-family: 'Playfair Display', sans-serif;
+                background-color:#e6f9ff;
+            }
+
+            .app {
+                float:left;
+                margin:10px;
+                border:1px solid black;
+                width:160px;
+                height:160px;
+                padding-top:20px;
+                border-radius: 15px; 
+                background-color:white;
+            }
+
+            .footer {
+                border-radius: 0 0 10px 10px; 
+                margin:10px 25px 25px 25px;
+                padding:10px;
+                margin-bottom: 0;
+                border:1px solid #0099e6;
+                text-align: right;
+                background-color:#e6f9ff;
+            }
+
+            .title {
+                font-size: 1.5em;
+                margin-bottom:5px;
+                text-shadow: 0px 3px 3px #fff;
+            }
+
+            .app-description {
+                padding:15px;
+                font-size:0.8em;
+                text-align: justify;
+                color:#666;
+            }
+
+            .app-title {
+                text-align:center;
+            }
+            
+            .app-content {
+                width:160px;
+                height:160px;
+                margin:0;
+                padding:0;
+                overflow: hidden;
+            }
+            
+            a.app:link, a.app:visited, a.app:hover {
+                text-decoration: none;
+                color:black;
+            }
+
+        </style>
+        <div class="introduction">
+            <div class="title">labs @ almatron.pl</div>
+            <div>Following apps are made strictly for fun. For source code checkout <a href="https://github.com/macvek/labs">github</a>.</div>
+            <div>Go figure .. </div>
+        </div>
+        <div class="applications">
+            <a class="app" href="jsfireworks">
+                <div class="app-content">
+                    <div class="app-title">
+                        JS Fireworks
+                    </div>
+                    <div class="app-description">
+                        An late evening app. Click on the night sky to shoot a fireworks rocket and enjoy the view.
+                    </div>
+                </div>
+            </a>
+            <div style="clear:both"></div>
+        </div>
+        <div class="footer">
+            almatron @ 2016
+        </div>
+        <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                var onEnter = {
+                    marginTop:0
+                };
+                
+                var onLeave = {
+                    marginTop:130
+                };
+        
+                
+                $(".app-title").css(onLeave);
+                
+                $(".app").mouseenter(function() {
+                    $(".app-title", this).animate(onEnter);
+                });
+                
+                $(".app").mouseleave(function() {
+                    $(".app-title", this).animate(onLeave);
+                });
+            });
+        </script>
+    </body>
+
+</html>
