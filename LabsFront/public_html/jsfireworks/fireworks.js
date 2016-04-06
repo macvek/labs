@@ -37,6 +37,7 @@ function Fireworks(canvasNode) {
     }
     
     var entities = [];
+    var toAddEntities = [];
     
     function Entity() {
         this.simulate = function() {
@@ -82,15 +83,23 @@ function Fireworks(canvasNode) {
                 aliveEntities.push(entity);
             }
         });
-        
         entities = aliveEntities;
+        
+        forEachArray(toAddEntities, function(entity) {
+            entities.push(entity);            
+        });
+        toAddEntities = [];
+        
     }
     
     function forEachEntity(callback) {
-        for (var i=0;i<entities.length;i++) {
-            callback(entities[i]);
+        forEachArray(entities,callback);
+    }
+    
+    function forEachArray(array,callback) {
+        for (var i=0;i<array.length;i++) {
+            callback(array[i]);
         }
-        
     }
     
     function render() {
@@ -114,12 +123,13 @@ function Fireworks(canvasNode) {
                     Math.PI*2 * Math.random(), 
                     Math.random()*4, 
                     Math.random()*1000 + 2000,
-                    colors[Math.floor(Math.random()*3)]);
+                    colors[Math.floor(Math.random()*3)],
+                    3);
             entities.push(particle.asEntity());
         }
     }
     
-    function Particle(start, angle, speed, timeToLive, color) {
+    function Particle(start, angle, speed, timeToLive, color, depthLevel) {
         var entity = new Entity();
         var pos = {
             x: start.x,
@@ -158,18 +168,31 @@ function Fireworks(canvasNode) {
         
         var elapsedSum = 0;
         var timeOfFrame = 1000/60;
+        
+        var cloned = false;
         entity.simulate = function(elapsed) {
             velocity.y +=  gravity;
             
             pos.x += velocity.x * elapsed / timeOfFrame;
             pos.y += velocity.y * elapsed / timeOfFrame;
             elapsedSum += elapsed;
+            var cloneMul = 0.4;
+            if (elapsedSum > timeToLive*cloneMul && !cloned && depthLevel > 1) {
+                
+                var clone = new Particle(pos, angle, speed*cloneMul, timeToLive*cloneMul, color, depthLevel-1);
+                toAddEntities.push(clone.asEntity());
+                cloned = true;
+            }
         };
         
         entity.isAlive = function() { return elapsedSum < timeToLive;};
         
         entity.render = function(ctx) {
             var age = elapsedSum/timeToLive;
+            if (age < 0 || age > 1) {
+                //console.log("ERROR");
+                return;
+            }
             ctx.fillStyle = colorFrom0To1(1-age*redModifier,1 - age*greenModifier,1-age*blueModifier);
             ctx.beginPath();
             ctx.arc(0, 0, 5 - age*4, 0, Math.PI*2, true); 
