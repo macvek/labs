@@ -46,9 +46,20 @@
                 
                 $(window).resize(onWindowResize);
                 onWindowResize();
+                
+                var interval = setInterval(function() {
+                   fireworks.click({clientX:$(window).width()/2, clientY:200}); 
+                },2000);
+                
                 $("#fireworks").click(function(e) {
-                   fireworks.click(e); 
+                    if (interval) {
+                        clearInterval(interval);
+                        interval = null;
+                    }
+                    fireworks.click(e); 
                 });
+                
+                
             });
         </script>
     </body>
