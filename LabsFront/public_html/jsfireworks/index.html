@@ -4,6 +4,7 @@
         <title>JSFireworks @ labs.almatron.pl</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://fonts.googleapis.com/css?family=Playfair+Display|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <style>
@@ -13,9 +14,23 @@
                 top:0;
                 background-color:black;
             }
+            
+            .tut {
+                position:absolute;
+                color:white;
+                top:5px;
+                left:5px;
+                font-family: 'Playfair Display', sans-serif;
+            }
+            
+            a:link, a:visited {
+                color:white;
+                font-family: 'Playfair Display', sans-serif;
+                font-weight: normal;
+            }
         </style>
-        
         <canvas id="fireworks"></canvas>
+        <div class="tut">Tap/Click for fireworks<br/><a href="http://labs.almatron.pl">Back to labs @ almatron</a></div>
         <script src="fireworks.js" ></script>
         <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
         <script>
