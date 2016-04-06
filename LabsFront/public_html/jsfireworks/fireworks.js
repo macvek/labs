@@ -107,18 +107,40 @@ function Fireworks(canvasNode) {
     }
     
     function explosionAt(pos) {
-        for (var i=0;i<10;i++) {
-            var particle = new Particle(pos, Math.PI*2 * Math.random(), Math.random()*3, Math.random()*2000 + 1000);
+        var colors = ["red", "green","blue"];
+        for (var i=0;i<50;i++) {
+            var particle = new Particle(
+                    pos, 
+                    Math.PI*2 * Math.random(), 
+                    Math.random()*4, 
+                    Math.random()*1000 + 2000,
+                    colors[Math.floor(Math.random()*3)]);
             entities.push(particle.asEntity());
         }
     }
     
-    function Particle(start, angle, speed, timeToLive) {
+    function Particle(start, angle, speed, timeToLive, color) {
         var entity = new Entity();
         var pos = {
             x: start.x,
             y: start.y
         };
+        
+        var redModifier = 1;
+        var blueModifier = 1;
+        var greenModifier = 1;
+        
+        if (color === 'red') {
+            redModifier = 0.2;
+        }
+        
+        if (color === 'blue') {
+            blueModifier = 0.2;
+        }
+        
+        if (color === 'green') {
+            greenModifier = 0.2;
+        }
         
         var velocity = rotatedIdentityX(angle);
         velocity.x *= speed;
@@ -132,18 +154,26 @@ function Fireworks(canvasNode) {
             return pos;
         };
         
+        var gravity = 0.02;
+        
         var elapsedSum = 0;
+        var timeOfFrame = 1000/60;
         entity.simulate = function(elapsed) {
-            pos.x += velocity.x;
-            pos.y += velocity.y;
+            velocity.y +=  gravity;
+            
+            pos.x += velocity.x * elapsed / timeOfFrame;
+            pos.y += velocity.y * elapsed / timeOfFrame;
             elapsedSum += elapsed;
         };
         
         entity.isAlive = function() { return elapsedSum < timeToLive;};
         
         entity.render = function(ctx) {
-            ctx.fillStyle = "white";
-            ctx.fillRect(-5,-5,10,10);
+            var age = elapsedSum/timeToLive;
+            ctx.fillStyle = colorFrom0To1(1-age*redModifier,1 - age*greenModifier,1-age*blueModifier);
+            ctx.beginPath();
+            ctx.arc(0, 0, 5 - age*4, 0, Math.PI*2, true); 
+            ctx.fill();
         };
     }
     
@@ -157,4 +187,13 @@ function Fireworks(canvasNode) {
         return {x:px, y:py};
     }
 
+    function colorFrom0To1(red,green,blue) {
+        return "#"+asHex(Math.floor(red*255)) + asHex(Math.floor(green*255)) + asHex(Math.floor(blue*255));
+        
+    }
+    
+    function asHex(byte) {
+        var chars = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+        return chars[Math.floor(byte/16)]+chars[byte%16];
+    }
 }
