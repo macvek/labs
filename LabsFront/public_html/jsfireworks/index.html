@@ -6,6 +6,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>JSFireworks template</div>
+        <style>
+            #fireworks {
+                position:absolute;
+                left:0;
+                top:0;
+                background-color:black;
+            }
+        </style>
+        
+        <canvas id="fireworks"></canvas>
+        <script src="fireworks.js" ></script>
+        <script src="https://code.jquery.com/jquery-1.12.2.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                var fireworks = new Fireworks($("#fireworks")[0]);
+                
+                function onWindowResize() {
+                    fireworks.resize({
+                        "width":$(window).width(),
+                        "height":$(window).height()
+                    });
+                };
+                
+                $(window).resize(onWindowResize);
+                onWindowResize();
+                $("#fireworks").click(function(e) {
+                   fireworks.click(e); 
+                });
+            });
+        </script>
     </body>
 </html>
